@@ -61,7 +61,7 @@ public class DailyTasksPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg;
+	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, hasSentSandMsg;
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -72,14 +72,14 @@ public class DailyTasksPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = false;
+		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentSandMsg = false;
 		cacheColors();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = false;
+		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentSandMsg = false;
 	}
 
 	@Subscribe
@@ -97,6 +97,9 @@ public class DailyTasksPlugin extends Plugin
 					break;
 				case "showEssence":
 					hasSentEssenceMsg = false;
+					break;
+				case "showSandBuckets":
+					hasSentSandMsg = false;
 					break;
 			}
 		}
@@ -121,6 +124,11 @@ public class DailyTasksPlugin extends Plugin
 			{
 				sendChatMessage("You have " + numberOfEssenceReady() + " pure essence waiting to be collected from Wizard Cromperty.");
 				hasSentEssenceMsg = true;
+			}
+			if (config.showSandBuckets() && !hasSentSandMsg && numberOfSandBucketsReady() > 0)
+			{
+				sendChatMessage("You have " + numberOfSandBucketsReady() + " buckets of sand waiting to be collected from Bert.");
+				hasSentSandMsg = true;
 			}
 		}
 	}
@@ -180,6 +188,18 @@ public class DailyTasksPlugin extends Plugin
 		else
 		{
 			return 0;
+		}
+	}
+
+	private int numberOfSandBucketsReady()
+	{
+		if (client.getVar(Varbits.DAILY_SAND_BUCKETS_CLAIMED) == 1)
+		{
+			return 0;
+		}
+		else
+		{
+			return 84;
 		}
 	}
 

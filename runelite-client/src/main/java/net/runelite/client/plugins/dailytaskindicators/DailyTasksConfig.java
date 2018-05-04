@@ -37,9 +37,8 @@ public interface DailyTasksConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showHerbBoxes",
-		name = "Show Herb Boxes",
-		description = "Configures whether or not to show a message when you can" +
-			" collect your daily herb boxes at NMZ",
+		name = "Herb boxes",
+		description = "Show a message when you can collect your daily herb boxes at Nightmare Zone",
 		position = 1
 	)
 	default boolean showHerbBoxes()
@@ -49,9 +48,8 @@ public interface DailyTasksConfig extends Config
 
 	@ConfigItem(
 		keyName = "showStaves",
-		name = "Show Claimable Staves",
-		description = "Configures whether or not to show a message when you can" +
-			" collect your daily staves from Zaff",
+		name = "Staves",
+		description = "Show a message when you can collect your daily staves from Zaff",
 		position = 2
 	)
 	default boolean showStaves()
@@ -61,12 +59,22 @@ public interface DailyTasksConfig extends Config
 
 	@ConfigItem(
 		keyName = "showEssence",
-		name = "Show Claimable Essence",
-		description = "Configures whether or not to show a message when you can" +
-			" collect your daily pure essence from Wizard Cromperty",
+		name = "Pure essence",
+		description = "Show a message when you can collect your daily pure essence from Wizard Cromperty",
 		position = 3
 	)
 	default boolean showEssence()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSandBuckets",
+		name = "Buckets of sand",
+		description = "Show a message when you can collect your daily buckets of sand from Bert",
+		position = 4
+	)
+	default boolean showSandBuckets()
 	{
 		return true;
 	}
