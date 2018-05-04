@@ -107,40 +107,80 @@ public class DailyTasksPlugin extends Plugin
 	{
 		if (event.getGroupId() == WidgetInfo.CHATBOX.getGroupId())
 		{
-			if (config.showHerbBoxes() && !hasSentHerbMsg && checkCanCollectHerbBox())
+			if (config.showHerbBoxes() && !hasSentHerbMsg && numberOfHerbBoxesReady() > 0)
 			{
-				sendChatMessage("You have herb boxes waiting to be collected at NMZ.");
+				sendChatMessage("You have " + numberOfHerbBoxesReady() + " herb boxes waiting to be collected at Nightmare Zone.");
 				hasSentHerbMsg = true;
 			}
-			if (config.showStaves() && !hasSentStavesMsg && checkCanCollectStaves())
+			if (config.showStaves() && !hasSentStavesMsg && numberOfStavesReady() > 0)
 			{
-				sendChatMessage("You have staves waiting to be collected from Zaff.");
+				sendChatMessage("You have " + numberOfStavesReady() + " staves waiting to be collected from Zaff.");
 				hasSentStavesMsg = true;
 			}
-			if (config.showEssence() && !hasSentEssenceMsg && checkCanCollectEssence())
+			if (config.showEssence() && !hasSentEssenceMsg && numberOfEssenceReady() > 0)
 			{
-				sendChatMessage("You have pure essence waiting to be collected from Wizard Cromperty.");
+				sendChatMessage("You have " + numberOfEssenceReady() + " pure essence waiting to be collected from Wizard Cromperty.");
 				hasSentEssenceMsg = true;
 			}
 		}
 	}
 
-	private boolean checkCanCollectHerbBox()
+	private int numberOfHerbBoxesReady()
 	{
-		int value = client.getVar(Varbits.DAILY_HERB_BOX);
-		return value < 15; // < 15 can claim
+		int numberClaimed = client.getVar(Varbits.DAILY_HERB_BOX);
+		return 15 - numberClaimed;
 	}
 
-	private boolean checkCanCollectStaves()
+	private int numberOfStavesReady()
 	{
-		int value = client.getVar(Varbits.DAILY_STAVES);
-		return value == 0; // 1 = can't claim
+		if (client.getVar(Varbits.DAILY_STAVES) == 1)
+		{
+			return 0;
+		}
+		if (client.getVar(Varbits.DIARY_VARROCK_ELITE) == 1)
+		{
+			return 120;
+		}
+		else if (client.getVar(Varbits.DIARY_VARROCK_HARD) == 1)
+		{
+			return 60;
+		}
+		else if (client.getVar(Varbits.DIARY_VARROCK_MEDIUM) == 1)
+		{
+			return 30;
+		}
+		else if (client.getVar(Varbits.DIARY_VARROCK_EASY) == 1)
+		{
+			return 15;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
-	private boolean checkCanCollectEssence()
+	private int numberOfEssenceReady()
 	{
-		int value = client.getVar(Varbits.DAILY_ESSENCE);
-		return value == 0; // 1 = can't claim
+		if (client.getVar(Varbits.DAILY_ESSENCE) == 1)
+		{
+			return 0;
+		}
+		if (client.getVar(Varbits.DIARY_ARDOUGNE_ELITE) == 1)
+		{
+			return 250;
+		}
+		else if (client.getVar(Varbits.DIARY_ARDOUGNE_HARD) == 1)
+		{
+			return 150;
+		}
+		else if (client.getVar(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1)
+		{
+			return 100;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	private void cacheColors()
